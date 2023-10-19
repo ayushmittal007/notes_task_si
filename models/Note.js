@@ -12,6 +12,7 @@ const notesSchema = mongoose.Schema({
   },
   content: {
     type: String,
+    
   },
 });
 const Note = mongoose.model("notes", notesSchema);
