@@ -8,10 +8,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}))
 app.use("/notes",notesRouter);
 
+const PORT=process.env.PORT || 5000
 //connecting with Database
-const {MONGODB_URI} = process.env
+const DB = process.env.MONGODB_URI
 const dbConnect = async function (){
-  await mongoose.connect(MONGODB_URI, {
+  await mongoose.connect(DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -24,6 +25,6 @@ const dbConnect = async function (){
 }
 dbConnect();
 
-app.listen(5000, () => {
-  console.log(`Connection is at port 5000`);
+app.listen(PORT, () => {
+  console.log(`Connection is at port ${PORT}`);
 });
