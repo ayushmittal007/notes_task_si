@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const sendmail = async (email,otp) => {
   try{
     const msg = {
-        from: 'Ayush Agrawal" spaces.inc.si@gmail.com"',
+        from: 'Ayush Agrawal" <ayushagrawal102004@gmail.com>',
         to: email,
         subject: `${otp} is your OTP from Ayush`,
         html: `
@@ -18,7 +18,8 @@ const sendmail = async (email,otp) => {
                 user: process.env.MAIL_ID,
                 pass: process.env.MAIL_PASS
             },
-            port: 456,
+            port: 465,
+            secure : true,
             host: "smtp.gmail.com"
     });
 
