@@ -5,16 +5,16 @@ const jwt = require("jsonwebtoken");
 
 const sign_up =  async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const existingUser = await User.findOne({ username });
+    const { email, password } = req.body;
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(400)
-        .json({ msg: "User with this username already exists" });
+        .json({ msg: "User with this email already exists" });
     }
     const hashedPass = await bcryptjs.hash(password, 6);
     let user = new User({
-      username,
+      email,
       password: hashedPass,
     });
     user = await user.save();
@@ -24,11 +24,11 @@ const sign_up =  async (req, res) => {
   }
 };
 
-const sign_in =  async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
+const log_in =  async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
   if (!user) {
-    return res.status(400).json({ msg: "No user found with this username " });
+    return res.status(400).json({ msg: "No user found with this email " });
   }
   const isMatch = await bcryptjs.compare(password, user.password);
   if (!isMatch) {
@@ -41,7 +41,7 @@ const sign_in =  async (req, res) => {
 
 const auth = async (req, res, next) => {
     try {
-      const token = req.header("auth-token");
+      const token = req.header("Authorization");
       if (!token) {
         return res.status(400).json({ msg: "No Token" });
       }
@@ -59,12 +59,13 @@ const auth = async (req, res, next) => {
 
 const get_user =  async (req, res) => {
   const user = await User.findById(req.user);
+  console.log("success");
   res.json({ ...user._doc, token: req.token });
 };
 
 module.exports = {
     sign_up,
-    sign_in,
+    log_in,
     auth,
     get_user
 };
