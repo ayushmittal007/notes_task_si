@@ -3,10 +3,12 @@ const app = express();
 const mongoose = require("mongoose");
 const notesRouter = require("./routes/notes_route");
 require('dotenv').config();
+const authRouter = require("./routes/auth_route");
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}))
 app.use("/notes",notesRouter);
+app.use("/notes",authRouter);
 
 const PORT=process.env.PORT || 5000
 //connecting with Database
